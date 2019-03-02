@@ -1,37 +1,44 @@
-function startUdp() {
+function startUdpServer(isStream) {
     var udp = require('dgram');
-
     // creating a udp server
     var server = udp.createSocket('udp4');
 
+    var protocol = 'Udp';
+    var numberOfMessages = 0;
+    var numberOfBytes = 0;
+
     // emits when any error occurs
-    server.on('error', function (error) {
+    server.on('error', function(error) {
         console.log('Error: ' + error);
         server.close();
     });
 
     // emits on new datagram msg
-    server.on('message', function (msg, info) {
-        console.log('Client %s: %s:%d\n', msg.toString(), info.address, info.port);
-        //console.log('Received %d bytes from %s:%d\n', msg.length, info.address, info.port);
-        var i = 0;    
-        while (i < 100) {
+    server.on('message', function(msg, info) {
+        //console.log('Data received from client : ' + msg.toString());
+        numberOfMessages++;
+        numberOfBytes = numberOfBytes + msg.length;
+        // console.log(
+        //     'Received %d bytes from %s:%d\n',
+        //     msg.length,
+        //     info.address,
+        //     info.port
+        // );
 
-
+        if (!isStream) {
             //sending msg
-            server.send(i.toString(), info.port, 'localhost', function (error) {
+            server.send('OK ' + numberOfMessages, info.port, 'localhost', function(error) {
                 if (error) {
                     client.close();
                 } else {
-                    console.log('Data sent !!!');
+                    console.log(numberOfMessages);
                 }
-                i++;
             });
         }
     });
 
     //emits when socket is ready and listening for datagram msgs
-    server.on('listening', function () {
+    server.on('listening', function() {
         var address = server.address();
         var port = address.port;
         var family = address.family;
@@ -42,16 +49,19 @@ function startUdp() {
     });
 
     //emits after the socket is closed using socket.close();
-    server.on('close', function () {
+    server.on('close', function() {
         console.log('Socket is closed !');
+        console.log(`Protocol: ${protocol}`);
+        console.log(`Number of messages: ${numberOfMessages}`);
+        console.log(`Bytes: ${numberOfBytes}`);
     });
 
     server.bind(2222);
 
-    setTimeout(function () {
+    setTimeout(function() {
         server.close();
-    }, 8000);
-
+    }, 990000);
 }
-
-startUdp();
+module.exports = {
+    startUdpServer: startUdpServer
+  };
