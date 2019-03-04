@@ -60,7 +60,7 @@ function startUdpServer(isStream) {
 
     setTimeout(function() {
         server.close();
-    }, 990000);
+    }, 10000);
 }
 module.exports = {
     startUdpServer: startUdpServer

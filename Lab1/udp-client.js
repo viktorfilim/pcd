@@ -26,7 +26,7 @@ function createUdpClient(filename, isStream, bufferSize) {
         startDate = new Date();
         hrstart = process.hrtime();
         if (isStream) {
-            //while (null !== readStream.read(bufferSize)) {}
+            while (null !== readStream.read(bufferSize)) {}
         } else {
             readStream.read(bufferSize);
         }
