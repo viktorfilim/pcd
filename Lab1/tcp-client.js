@@ -20,22 +20,12 @@ function createTctClient(filename, isStream, bufferSize) {
         console.log('Client is listening at port' + port);
         console.log('Client ip :' + ipaddr);
         console.log('Client is IP4/IP6 : ' + family);
-
+        hrstart = process.hrtime();
     });
 
     client.on('data', function (data) {
         //console.log(data.toString() + ' = ' + sentMessages);
         readStream.read(bufferSize);
-    });
-
-    readStream.on('readable', () => {
-        startDate = new Date();
-        hrstart = process.hrtime();
-        if (isStream) {
-            while (null !== readStream.read(bufferSize)) { }
-        } else {
-            readStream.read(bufferSize);
-        }
     });
 
     readStream.on('data', chunk => {
@@ -65,9 +55,18 @@ function createTctClient(filename, isStream, bufferSize) {
         console.log(`Start time: ${startDate}`);
         console.log(`End time: ${finishDate}`);
         console.log(`Time: ${hrend[0]}s, ${hrend[1] / 1000000}ms`);
+        console.log(hrend);
         console.log(`Number of messages: ${sentMessages}`);
         console.log(`Bytes: ${numberOfBytes}`);
     });
+
+    if (isStream) {
+        console.log('aa');
+        while (null !== readStream.read(bufferSize)) { }
+    } else {
+        console.log('ss');
+        readStream.read(bufferSize);
+    }
 }
 module.exports = {
     createTctClient: createTctClient

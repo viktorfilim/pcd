@@ -16,13 +16,7 @@ function createUdpClient(filename, isStream, bufferSize) {
     });
 
     readStream.on('readable', () => {
-        startDate = new Date();
-        hrstart = process.hrtime();
-        if (isStream) {
-            while (null !== readStream.read(bufferSize)) { }
-        } else {
-            readStream.read(bufferSize);
-        }
+
     });
 
     readStream.on('data', chunk => {
@@ -54,6 +48,17 @@ function createUdpClient(filename, isStream, bufferSize) {
         console.log(`Number of messages: ${sentMessages}`);
         console.log(`Bytes: ${numberOfBytes}`);
     });
+    console.log('sdsad');
+    startDate = new Date();
+    hrstart = process.hrtime();
+    if (isStream) {
+    console.log('sdssad');
+
+        while (null !== readStream.read(bufferSize)) { }
+    } else {
+        readStream.read(bufferSize);
+    }
+
 }
 module.exports = {
     createUdpClient: createUdpClient

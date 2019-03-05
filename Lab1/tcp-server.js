@@ -57,7 +57,6 @@ function startTcpServer(isStream) {
             console.log(`Protocol: ${protocol}`);
             console.log(`Number of messages: ${numberOfMessages}`);
             console.log(`Bytes: ${bread}`);
-            console.log(`Bytes2: ${numberOfBytes}`);
 
             console.log('Socket closed!');
 
